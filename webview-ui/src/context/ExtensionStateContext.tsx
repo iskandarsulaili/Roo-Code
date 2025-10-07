@@ -274,7 +274,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		alwaysAllowUpdateTodoList: true,
 		includeDiagnosticMessages: true,
 		maxDiagnosticMessages: 50,
-		requireCtrlEnterToSend: false,
+		requireCtrlEnterToSend: false, // Default to expected value
 		openRouterImageApiKey: "",
 		openRouterImageGenerationSelectedModel: "",
 		includeCurrentTime: true,
@@ -422,6 +422,10 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 					if (message.marketplaceInstalledMetadata !== undefined) {
 						setMarketplaceInstalledMetadata(message.marketplaceInstalledMetadata)
 					}
+					break
+				}
+				case "requireCtrlEnterToSend": {
+					setState((prevState) => ({ ...prevState, requireCtrlEnterToSend: message.bool ?? false }))
 					break
 				}
 			}
