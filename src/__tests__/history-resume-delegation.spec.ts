@@ -68,7 +68,6 @@ describe("History resume delegation - parent metadata transitions", () => {
 		const removeClineFromStack = vi.fn().mockResolvedValue(undefined)
 		const createTaskWithHistoryItem = vi.fn().mockResolvedValue({
 			taskId: "parent-1",
-			skipPrevResponseIdOnce: false,
 			resumeAfterDelegation: vi.fn().mockResolvedValue(undefined),
 		})
 
@@ -203,13 +202,9 @@ describe("History resume delegation - parent metadata transitions", () => {
 		expect(apiCall.messages).toHaveLength(2) // 1 original + 1 injected
 	})
 
-	it("reopenParentFromDelegation sets skipPrevResponseIdOnce via resumeAfterDelegation", async () => {
+	it("reopenParentFromDelegation resumes parent after delegation", async () => {
 		const parentInstance: any = {
-			skipPrevResponseIdOnce: false,
-			resumeAfterDelegation: vi.fn().mockImplementation(async function (this: any) {
-				// Simulate what the real resumeAfterDelegation does
-				this.skipPrevResponseIdOnce = true
-			}),
+			resumeAfterDelegation: vi.fn().mockResolvedValue(undefined),
 			overwriteClineMessages: vi.fn().mockResolvedValue(undefined),
 			overwriteApiConversationHistory: vi.fn().mockResolvedValue(undefined),
 		}
@@ -245,8 +240,7 @@ describe("History resume delegation - parent metadata transitions", () => {
 			completionResultSummary: "Done",
 		})
 
-		// Critical: verify skipPrevResponseIdOnce set to true by resumeAfterDelegation
-		expect(parentInstance.skipPrevResponseIdOnce).toBe(true)
+		// Verify resumeAfterDelegation is invoked to continue parent without prompt
 		expect(parentInstance.resumeAfterDelegation).toHaveBeenCalledTimes(1)
 	})
 

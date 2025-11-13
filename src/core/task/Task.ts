@@ -292,10 +292,6 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	didRejectTool = false
 	didAlreadyUseTool = false
 	didCompleteReadingStream = false
-
-	// Request continuity
-	skipPrevResponseIdOnce = false
-
 	assistantMessageParser: AssistantMessageParser
 
 	// Token Usage Cache
@@ -1696,9 +1692,6 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		this.didFinishAbortingStream = false
 		this.isStreaming = false
 		this.isWaitingForFirstChunk = false
-
-		// Ensure next API call includes full context after delegation
-		this.skipPrevResponseIdOnce = true
 
 		// Mark as initialized and active
 		this.isInitialized = true
