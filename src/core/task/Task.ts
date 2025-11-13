@@ -292,6 +292,10 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	didRejectTool = false
 	didAlreadyUseTool = false
 	didCompleteReadingStream = false
+
+	// Request continuity
+	skipPrevResponseIdOnce = false
+
 	assistantMessageParser: AssistantMessageParser
 
 	// Token Usage Cache
